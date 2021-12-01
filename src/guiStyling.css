@@ -12,19 +12,12 @@ svg {
     margin: 0 auto;
 }
 
-input, button {
+button {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 100%;
+    color:#36454f;
     background: #dddddd;
     border:#dddddd;
-    margin: 0 auto;
-    margin-left: 0 auto;
-    margin-right: 0 auto;
-    width: 100%;
-    height: 5%;
-}
-
-p {
-    background: white;
-    border:white;
     margin: 0 auto;
     margin-left: 0 auto;
     margin-right: 0 auto;
