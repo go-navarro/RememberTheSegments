@@ -24,106 +24,46 @@
                     ry="60" start="0" end="1.5707963" arc-type="slice" d="M 135,75 A 60,60 0 0 1 75,135 V 75 Z" />
             </g>
         </svg>
-        <button id="buttonNewGame" onclick="viewRandomInt(numBlinks)">New Game</button>
+        <button id="buttonNewGame">New Game</button>
     </div>
 </body>
+
 <script type="text/javascript" src="RandomNumberGeneration.js"></script>
+<script type="text/javascript" src="GameFunctions.js"></script>
 <script>
-    var offColor = "#ffffff";
-    const segmentInfo = { "segment0": "#cd7f32", "segment1": "#ffbf00", "segment2": "#880808", "segment3": "#000000" };
-    const statusColors = { "success": "#7ec850", "failure": "#ff4d4d" };
-    const numSegments = Object.keys(segmentInfo).length;
-
-    const numBlinks = 4;
-    var userAns = [];
-    var correctAns = [];
-
-    function resetSegmentColor(segment) {
-        document.getElementById(segment).setAttribute("fill", segmentInfo[segment]);
-    }
-
-    function resetSegments() {
-        for (segment in segmentInfo) {
-            resetSegmentColor(segment, segmentInfo[segment]);
-        }
-    }
-
-    function registerClick(id) {
-        document.getElementById(id).setAttribute("fill", offColor);
-        userAns.push(id);
-
-        if (userAns.length === numBlinks) {
-            resetSegments();
-            if (isGameWon(userAns, correctAns)) {
-                changeStatus("You win. Play again?", "white", statusColors.success);
-            } else {
-                changeStatus("You lose. Play again?", "white", statusColors.failure);
-            }
-            userAns = [];
-            correctAns = [];
-
-            disableAllSegments(true);
-            document.getElementById("buttonNewGame").disabled = false;
-        }
-        return id;
-    }
-
-    function disableAllSegments(disableYes) {
-        for (segment in segmentInfo) {
-            if (disableYes) {
-                document.getElementById(segment).setAttribute("onmousedown", "");
-                document.getElementById(segment).setAttribute("onmouseup", "");
-            } else {
-                document.getElementById(segment).setAttribute("onmousedown", "registerClick(this.id)");
-                document.getElementById(segment).setAttribute("onmouseup", "resetSegmentColor(this.id)");
-            }
-        }
-    }
-
-    function viewRandomInt(seqLength) {
+    function viewBlinkingSegments(seqLength) {
         changeStatus("Memorize the sequence.", "white", "#36454f");
 
         var button = document.getElementById("buttonNewGame");
         button.disabled = true;
         disableAllSegments(true);
 
-        let increment = 400;
-        var blinkDuration = 2 * seqLength + 2;
-        for (let i = 1; i < blinkDuration; i++) {
+        var blinkDuration = 2 * seqLength;
+        var rand; var segmentName;
+        for (let i = 0; i < blinkDuration; i++) {
+
             setTimeout(() => {
                 if ((i % 2) === 0) {
-                    let rand = randomInt(0, numSegments);
-                    let segmentName = Object.keys(segmentInfo)[rand];
-
+                    rand = randomInt(0, numSegments);
+                    segmentName = Object.keys(segmentInfo)[rand];
                     correctAns.push(segmentName);
 
                     let chosenSegment = document.getElementById(segmentName);
                     chosenSegment.setAttribute("fill", offColor);
                 } else {
-                    resetSegments();
+                    resetSegmentColor(segmentName);
                 }
-            }, i * increment);
+            }, timeIncrement + i * timeIncrement);
         }
 
         setTimeout(() => {
-            resetSegments();
             disableAllSegments(false);
+
             changeStatus("Press the segments.", "white", "#36454f");
-        }, blinkDuration * increment);
+        }, timeIncrement + blinkDuration * timeIncrement);
     }
 
-    function changeStatus(statusText, statusTextColor, statusBackground) {
-        let button = document.getElementById("buttonNewGame");
-        button.innerText = statusText;
-        button.innerText = statusText;
-        button.style.color = statusTextColor;
-        button.style.background = statusBackground;
-    }
-
-    function isGameWon(correctAns, userAns) {
-        return JSON.stringify(correctAns) === JSON.stringify(userAns);
-    }
-
+    document.getElementById("buttonNewGame").setAttribute("onclick", `viewBlinkingSegments("${numBlinks}")`);
 </script>
 
 </html>
