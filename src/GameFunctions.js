@@ -1,4 +1,6 @@
 const offColor = "#ffffff";
+const menuColor = "#36454f";
+
 const segmentInfo = { "segment0": "#cd7f32", "segment1": "#ffbf00", "segment2": "#880808", "segment3": "#000000" };
 const statusColors = { "success": "#7ec850", "failure": "#ff4d4d" };
 const numSegments = Object.keys(segmentInfo).length;
@@ -68,4 +70,36 @@ function changeStatus(statusText, statusTextColor, statusBackground) {
     button.innerText = statusText;
     button.style.color = statusTextColor;
     button.style.background = statusBackground;
+}
+
+function viewBlinkingSegments(seqLength) {
+    changeStatus("Memorize the sequence.", "white", "#36454f");
+
+    var button = document.getElementById("buttonNewGame");
+    button.disabled = true;
+    disableAllSegments(true);
+
+    var blinkDuration = 2 * seqLength;
+    var rand; var segmentName;
+    for (let i = 0; i < blinkDuration; i++) {
+
+        setTimeout(() => {
+            if ((i % 2) === 0) {
+                rand = randomInt(0, numSegments);
+                segmentName = Object.keys(segmentInfo)[rand];
+                correctAns.push(segmentName);
+
+                let chosenSegment = document.getElementById(segmentName);
+                chosenSegment.setAttribute("fill", offColor);
+            } else {
+                resetSegmentColor(segmentName);
+            }
+        }, timeIncrement + i * timeIncrement);
+    }
+
+    setTimeout(() => {
+        disableAllSegments(false);
+
+        changeStatus("Press the segments.", "white", menuColor);
+    }, timeIncrement + blinkDuration * timeIncrement);
 }
