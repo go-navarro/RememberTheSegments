@@ -1,6 +1,6 @@
 # RememberTheSegments
 
-![demo2b](https://user-images.githubusercontent.com/35288746/144742935-14f88554-28dc-49f1-92a4-29cc7c00dc66.gif)
+![demo](demo/demo.gif)
 
 ## How to run the program
 Open `gui.html` in a browser such Chrome or Edge.
