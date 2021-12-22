@@ -1,4 +1,4 @@
-# RememberTheSegments
+# Remember The Segments
 
 ![demo](demo/demo.gif)
 
